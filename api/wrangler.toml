@@ -29,10 +29,10 @@ index_name = "listings-semantic-prod"
 binding = "EMAIL_QUEUE"
 queue = "email-queue"
 
-[[queues.consumers]]
-queue = "email-queue"
-max_batch_size = 10
-max_batch_timeout = 30
+# [[queues.consumers]]
+# queue = "email-queue"
+# max_batch_size = 10
+# max_batch_timeout = 30
 
 # AI Binding
 [ai]
