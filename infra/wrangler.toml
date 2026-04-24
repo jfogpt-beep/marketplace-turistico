@@ -62,7 +62,7 @@ index_name = "listings-semantic"
 # AI (Workers AI)
 # =========================
 # Modelos de IA para embeddings, generación de descripciones, etc.
-[[ai]]
+[ai]
 binding = "AI"
 
 # =========================
