@@ -226,5 +226,4 @@ DASHBOARD_URL = "https://marketplace-turistico.pages.dev/dashboard"
 command = "npm run build:api"
 cwd = "."
 watch_dir = "./api/src"
-c"
 
