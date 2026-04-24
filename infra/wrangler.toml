@@ -6,7 +6,7 @@ compatibility_flags = ["nodejs_compat"]
 # =========================
 # ACCOUNT
 # =========================
-account_id = "${CLOUDFLARE_ACCOUNT_ID}"
+account_id = "72b3ecc8339feffafd1857aaa2347d44"
 
 # =========================
 # D1 DATABASE
