@@ -192,7 +192,7 @@ database_id = "${PROD_D1_DATABASE_ID}"
 
 [[env.prod.kv_namespaces]]
 binding = "SESSIONS"
-id = "${PROD_KV_SESSIONS_ID}"
+id = "9c167b53c8194a9e9cbe72daab0a6882"
 
 [[env.prod.kv_namespaces]]
 binding = "CACHE"
@@ -226,3 +226,5 @@ DASHBOARD_URL = "https://marketplace-turistico.pages.dev/dashboard"
 command = "npm run build:api"
 cwd = "."
 watch_dir = "./api/src"
+c"
+

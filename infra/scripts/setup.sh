@@ -41,14 +41,10 @@ fi
 echo "🏗️  Creando KV Namespaces..."
 
 # Sessions KV
-wrangler kv:namespace create "SESSIONS-$ENV" || echo "   ℹ️  KV SESSIONS ya existe..."
-SESSIONS_KV_ID=$(wrangler kv:namespace list --json | jq -r ".[] | select(.title==\"SESSIONS-$ENV\") | .id" 2>/dev/null || echo "")
-[ -n "$SESSIONS_KV_ID" ] && echo "   ✅ SESSIONS KV ID: $SESSIONS_KV_ID"
+wrangler kv namespace create "SESSIONS-$ENV" 2>/dev/null || echo "   ℹ️  KV SESSIONS ya existe..."
 
 # Cache KV
-wrangler kv:namespace create "CACHE-$ENV" || echo "   ℹ️  KV CACHE ya existe..."
-CACHE_KV_ID=$(wrangler kv:namespace list --json | jq -r ".[] | select(.title==\"CACHE-$ENV\") | .id" 2>/dev/null || echo "")
-[ -n "$CACHE_KV_ID" ] && echo "   ✅ CACHE KV ID: $CACHE_KV_ID"
+wrangler kv namespace create "CACHE-$ENV" 2>/dev/null || echo "   ℹ️  KV CACHE ya existe..."
 
 # ---------------------------------------------------------------------------
 # 3. R2 BUCKET
