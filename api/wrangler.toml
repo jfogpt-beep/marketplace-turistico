@@ -12,7 +12,7 @@ database_id = "00000000-0000-0000-0000-000000000000"
 # KV Namespaces
 [[kv_namespaces]]
 binding = "KV_SESSIONS"
-id = "00000000000000000000000000000000"
+id = "9c167b53c8194a9e9cbe72daab0a6882"
 
 # R2 Buckets (deshabilitado temporalmente - activar en dashboard de Cloudflare)
 # [[r2_buckets]]
@@ -20,9 +20,9 @@ id = "00000000000000000000000000000000"
 # bucket_name = "marketplace-turistico-assets"
 
 # Vectorize Index
-[[vectorize_indexes]]
+[[vectorize]]
 binding = "VECTORIZE_INDEX"
-index_name = "listings-search"
+index_name = "listings-semantic-prod"
 
 # Queue
 [[queues.producers]]
@@ -56,3 +56,4 @@ head_sampling_rate = 1
 # Dev settings
 [dev]
 port = 8787
+
