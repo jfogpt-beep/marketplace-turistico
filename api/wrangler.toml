@@ -14,10 +14,10 @@ database_id = "00000000-0000-0000-0000-000000000000"
 binding = "KV_SESSIONS"
 id = "00000000000000000000000000000000"
 
-# R2 Buckets
-[[r2_buckets]]
-binding = "R2_BUCKET"
-bucket_name = "marketplace-turistico-assets"
+# R2 Buckets (deshabilitado temporalmente - activar en dashboard de Cloudflare)
+# [[r2_buckets]]
+# binding = "R2_BUCKET"
+# bucket_name = "marketplace-turistico-assets"
 
 # Vectorize Index
 [[vectorize_indexes]]
