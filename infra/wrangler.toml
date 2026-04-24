@@ -96,7 +96,7 @@ head_sampling_rate = 1
 # =========================
 # RATE LIMITING
 # =========================
-[unsafe.bindings]
+[[unsafe.bindings]]
 name = "RATE_LIMITER"
 type = "ratelimit"
 namespace_id = "1001"
@@ -226,10 +226,3 @@ DASHBOARD_URL = "https://marketplace-turistico.pages.dev/dashboard"
 command = "npm run build:api"
 cwd = "."
 watch_dir = "./api/src"
-
-# =========================
-# MINIFLARE (local dev)
-# =========================
-[miniflare]
-port = 8787
-host = "0.0.0.0"
