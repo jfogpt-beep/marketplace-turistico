@@ -81,7 +81,7 @@ app.route("/admin", adminRouter);
 
 // Stripe webhooks (special route — no auth, signature verification instead)
 app.post("/webhooks/stripe", async (c) => {
-  const { handleStripeWebhook, verifyWebhookSignature } = await import("../integrations/stripe/webhooks");
+  const { handleStripeWebhook, verifyWebhookSignature } = await import("./integrations/stripe/webhooks");
   const payload = await c.req.text();
   const signature = c.req.header("stripe-signature") || "";
   
