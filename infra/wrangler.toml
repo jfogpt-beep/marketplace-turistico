@@ -1,0 +1,235 @@
+name = "marketplace-api"
+main = "./api/src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# =========================
+# ACCOUNT
+# =========================
+account_id = "${CLOUDFLARE_ACCOUNT_ID}"
+
+# =========================
+# D1 DATABASE
+# =========================
+[[d1_databases]]
+binding = "DB"
+database_name = "marketplace-db"
+database_id = "${D1_DATABASE_ID}"
+
+# =========================
+# KV NAMESPACES
+# =========================
+# KV para sesiones (JWT refresh tokens, OAuth states)
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "${KV_SESSIONS_ID}"
+
+# KV para caché general (resultados de búsqueda, listados populares, sitemap)
+[[kv_namespaces]]
+binding = "CACHE"
+id = "${KV_CACHE_ID}"
+
+# =========================
+# R2 BUCKETS
+# =========================
+# Bucket para imágenes de anuncios y avatares de agencias
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "marketplace-images"
+
+# =========================
+# QUEUES
+# =========================
+# Cola para envío de emails (confirmaciones, notificaciones, alertas)
+[[queues.producers]]
+binding = "EMAIL_QUEUE"
+queue = "emails"
+
+# Cola para notificaciones push/internas (nuevos leads, mensajes, alertas admin)
+[[queues.producers]]
+binding = "NOTIFICATIONS_QUEUE"
+queue = "notifications"
+
+# =========================
+# VECTORIZE
+# =========================
+# Índice semántico para búsqueda de listings por similitud de descripción
+[[vectorize]]
+binding = "VECTORIZE_INDEX"
+index_name = "listings-semantic"
+
+# =========================
+# AI (Workers AI)
+# =========================
+# Modelos de IA para embeddings, generación de descripciones, etc.
+[[ai]]
+binding = "AI"
+
+# =========================
+# ENVIRONMENT VARIABLES
+# =========================
+[vars]
+APP_NAME = "marketplace-turistico"
+APP_VERSION = "1.0.0"
+API_BASE_URL = "https://api.marketplace-turistico.workers.dev"
+FRONTEND_URL = "https://marketplace-turistico.pages.dev"
+DASHBOARD_URL = "https://marketplace-turistico.pages.dev/dashboard"
+STRIPE_PUBLISHABLE_KEY = "${STRIPE_PUBLISHABLE_KEY}"
+
+# =========================
+# SECRETS (wrangler secret put)
+# =========================
+# STRIPE_SECRET_KEY          → wrangler secret put STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET      → wrangler secret put STRIPE_WEBHOOK_SECRET
+# JWT_SECRET                 → wrangler secret put JWT_SECRET
+# ADMIN_API_KEY              → wrangler secret put ADMIN_API_KEY
+# RESEND_API_KEY             → wrangler secret put RESEND_API_KEY (para emails)
+# CLOUDFLARE_API_TOKEN       → wrangler secret put CLOUDFLARE_API_TOKEN
+
+# =========================
+# ANALYTICS & LOGGING
+# =========================
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+# =========================
+# RATE LIMITING
+# =========================
+[unsafe.bindings]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+
+# =========================
+# ENVIRONMENTS
+# =========================
+
+# ---- DEV ----
+[env.dev]
+name = "marketplace-api-dev"
+
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "marketplace-db-dev"
+database_id = "${DEV_D1_DATABASE_ID}"
+
+[[env.dev.kv_namespaces]]
+binding = "SESSIONS"
+id = "${DEV_KV_SESSIONS_ID}"
+
+[[env.dev.kv_namespaces]]
+binding = "CACHE"
+id = "${DEV_KV_CACHE_ID}"
+
+[[env.dev.r2_buckets]]
+binding = "IMAGES"
+bucket_name = "marketplace-images-dev"
+
+[[env.dev.queues.producers]]
+binding = "EMAIL_QUEUE"
+queue = "emails-dev"
+
+[[env.dev.queues.producers]]
+binding = "NOTIFICATIONS_QUEUE"
+queue = "notifications-dev"
+
+[[env.dev.vectorize]]
+binding = "VECTORIZE_INDEX"
+index_name = "listings-semantic-dev"
+
+[env.dev.vars]
+API_BASE_URL = "https://marketplace-api-dev.workers.dev"
+FRONTEND_URL = "https://marketplace-turistico-dev.pages.dev"
+DASHBOARD_URL = "https://marketplace-turistico-dev.pages.dev/dashboard"
+
+# ---- STAGING ----
+[env.staging]
+name = "marketplace-api-staging"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "marketplace-db-staging"
+database_id = "${STAGING_D1_DATABASE_ID}"
+
+[[env.staging.kv_namespaces]]
+binding = "SESSIONS"
+id = "${STAGING_KV_SESSIONS_ID}"
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE"
+id = "${STAGING_KV_CACHE_ID}"
+
+[[env.staging.r2_buckets]]
+binding = "IMAGES"
+bucket_name = "marketplace-images-staging"
+
+[[env.staging.queues.producers]]
+binding = "EMAIL_QUEUE"
+queue = "emails-staging"
+
+[[env.staging.queues.producers]]
+binding = "NOTIFICATIONS_QUEUE"
+queue = "notifications-staging"
+
+[[env.staging.vectorize]]
+binding = "VECTORIZE_INDEX"
+index_name = "listings-semantic-staging"
+
+[env.staging.vars]
+API_BASE_URL = "https://marketplace-api-staging.workers.dev"
+FRONTEND_URL = "https://marketplace-turistico-staging.pages.dev"
+DASHBOARD_URL = "https://marketplace-turistico-staging.pages.dev/dashboard"
+
+# ---- PROD ----
+[env.prod]
+name = "marketplace-api-prod"
+
+[[env.prod.d1_databases]]
+binding = "DB"
+database_name = "marketplace-db-prod"
+database_id = "${PROD_D1_DATABASE_ID}"
+
+[[env.prod.kv_namespaces]]
+binding = "SESSIONS"
+id = "${PROD_KV_SESSIONS_ID}"
+
+[[env.prod.kv_namespaces]]
+binding = "CACHE"
+id = "${PROD_KV_CACHE_ID}"
+
+[[env.prod.r2_buckets]]
+binding = "IMAGES"
+bucket_name = "marketplace-images-prod"
+
+[[env.prod.queues.producers]]
+binding = "EMAIL_QUEUE"
+queue = "emails-prod"
+
+[[env.prod.queues.producers]]
+binding = "NOTIFICATIONS_QUEUE"
+queue = "notifications-prod"
+
+[[env.prod.vectorize]]
+binding = "VECTORIZE_INDEX"
+index_name = "listings-semantic-prod"
+
+[env.prod.vars]
+API_BASE_URL = "https://api.marketplace-turistico.workers.dev"
+FRONTEND_URL = "https://marketplace-turistico.pages.dev"
+DASHBOARD_URL = "https://marketplace-turistico.pages.dev/dashboard"
+
+# =========================
+# BUILD / BUNDLE
+# =========================
+[build]
+command = "npm run build:api"
+cwd = "."
+watch_dir = "./api/src"
+
+# =========================
+# MINIFLARE (local dev)
+# =========================
+[miniflare]
+port = 8787
+host = "0.0.0.0"

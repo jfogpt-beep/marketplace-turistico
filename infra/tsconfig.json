@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "jsx": "preserve",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {
+      "@api/*": ["./api/src/*"],
+      "@web/*": ["./web/src/*"],
+      "@dashboard/*": ["./dashboard/src/*"],
+      "@shared/*": ["./shared/src/*"]
+    },
+    "types": ["@cloudflare/workers-types", "vitest/globals"]
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist", ".next", "out", "build"],
+  "references": [
+    { "path": "./api" },
+    { "path": "./web" },
+    { "path": "./dashboard" },
+    { "path": "./integrations" }
+  ]
+}

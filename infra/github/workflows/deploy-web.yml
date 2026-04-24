@@ -1,0 +1,72 @@
+name: Deploy Web (Portal Público)
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'web/**'
+      - 'shared/**'
+      - '.github/workflows/deploy-web.yml'
+      - 'web/wrangler.toml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+env:
+  NODE_VERSION: '22'
+  NEXT_PUBLIC_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://api.marketplace-turistico.workers.dev' || 'https://marketplace-api-staging.workers.dev' }}
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Web
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'prod' || 'staging') }}
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint -- --workspace=web
+
+      - name: Type check
+        run: npm run typecheck:web
+
+      - name: Build Next.js
+        run: npm run build:web
+        env:
+          NEXT_PUBLIC_API_URL: ${{ env.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: './web'
+          command: pages deploy .next --project-name="marketplace-web-${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'prod' || 'staging') }}"
+
+      - name: Post-deploy notification
+        if: always()
+        run: |
+          echo "✅ Web deployed successfully!"
+          echo "URL: ${{ steps.deploy.outputs.deployment-url }}"

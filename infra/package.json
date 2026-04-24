@@ -1,0 +1,60 @@
+{
+  "name": "marketplace-turistico",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketplace de ofertas turísticas — 100% Cloudflare",
+  "workspaces": [
+    "api",
+    "web",
+    "dashboard",
+    "integrations"
+  ],
+  "scripts": {
+    "dev": "wrangler dev --env dev",
+    "dev:api": "cd api && wrangler dev --env dev",
+    "dev:web": "cd web && npm run dev",
+    "dev:dashboard": "cd dashboard && npm run dev",
+    "build": "npm run build:api && npm run build:web && npm run build:dashboard",
+    "build:api": "cd api && npm run build",
+    "build:web": "cd web && npm run build",
+    "build:dashboard": "cd dashboard && npm run build",
+    "build:integrations": "cd integrations && npm run build",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "typecheck": "tsc --noEmit",
+    "typecheck:api": "cd api && tsc --noEmit",
+    "typecheck:web": "cd web && tsc --noEmit",
+    "typecheck:dashboard": "cd dashboard && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:api": "cd api && vitest run",
+    "db:generate": "cd api && drizzle-kit generate",
+    "db:migrate": "cd api && drizzle-kit migrate",
+    "db:migrate:local": "cd api && wrangler d1 migrations apply marketplace-db --local",
+    "db:migrate:prod": "cd api && wrangler d1 migrations apply marketplace-db --env prod",
+    "db:seed": "bash scripts/seed.sh",
+    "db:studio": "cd api && drizzle-kit studio",
+    "deploy:api": "cd api && wrangler deploy --env prod",
+    "deploy:web": "cd web && wrangler pages deploy .next --env prod",
+    "deploy:dashboard": "cd dashboard && wrangler pages deploy .next --env prod --project-name marketplace-dashboard",
+    "deploy:all": "bash scripts/deploy-all.sh",
+    "setup": "bash scripts/setup.sh",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0",
+    "wrangler": "^3.99.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@10.9.0"
+}

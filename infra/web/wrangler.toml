@@ -1,0 +1,73 @@
+# Cloudflare Pages — Next.js Frontend (Portal Público)
+# Ubicación: /root/.openclaw/workspace/marketplace-turistico/infra/web/wrangler.toml
+
+name = "marketplace-web"
+pages_build_output_dir = "./web/.next"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# =========================
+# ACCOUNT
+# =========================
+account_id = "${CLOUDFLARE_ACCOUNT_ID}"
+
+# =========================
+# FUNCTIONS (API Routes de Next.js → Workers)
+# =========================
+# Las API routes de Next.js se ejecutan como Workers Functions
+# Si necesitas bindings en las API routes de Next.js, defínelos aquí
+
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "${KV_CACHE_ID}"
+
+# =========================
+# ENVIRONMENT VARIABLES (públicas — disponibles en el browser)
+# =========================
+[vars]
+NEXT_PUBLIC_API_URL = "https://api.marketplace-turistico.workers.dev"
+NEXT_PUBLIC_APP_NAME = "Marketplace Turístico"
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "${STRIPE_PUBLISHABLE_KEY}"
+NEXT_PUBLIC_APP_VERSION = "1.0.0"
+
+# =========================
+# SECRETS (solo servidor — API routes de Next.js)
+# =========================
+# Estas secretos solo están disponibles en las API routes de Next.js (server-side)
+# NO están expuestas al browser
+# API_KEY                    → wrangler pages secret put API_KEY
+# INTERNAL_API_TOKEN         → wrangler pages secret put INTERNAL_API_TOKEN
+
+# =========================
+# BUILD CONFIGURATION
+# =========================
+[build]
+command = "cd web && npm run build"
+
+# =========================
+# ENVIRONMENTS
+# =========================
+
+# ---- DEV ----
+[env.dev]
+name = "marketplace-web-dev"
+
+[env.dev.vars]
+NEXT_PUBLIC_API_URL = "https://marketplace-api-dev.workers.dev"
+NEXT_PUBLIC_APP_NAME = "Marketplace Turístico [DEV]"
+
+# ---- STAGING ----
+[env.staging]
+name = "marketplace-web-staging"
+
+[env.staging.vars]
+NEXT_PUBLIC_API_URL = "https://marketplace-api-staging.workers.dev"
+NEXT_PUBLIC_APP_NAME = "Marketplace Turístico [STAGING]"
+
+# ---- PROD ----
+[env.prod]
+name = "marketplace-web-prod"
+
+[env.prod.vars]
+NEXT_PUBLIC_API_URL = "https://api.marketplace-turistico.workers.dev"
+NEXT_PUBLIC_APP_NAME = "Marketplace Turístico"
